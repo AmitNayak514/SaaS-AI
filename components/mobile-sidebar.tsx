@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 
 const MobileSidebar = () => {
   return (
-    <Button size={"icon"} variant="ghost" className="md:hidden">
+    <Button size="icon" variant="ghost" className="md:hidden">
       <Menu />
     </Button>
   );

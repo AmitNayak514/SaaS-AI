@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 const LandingPage = () => {
   return (
@@ -9,6 +10,10 @@ const LandingPage = () => {
       <Link href="/sign-up">
         <Button>Register</Button>
       </Link>
+      <Link href="/dashboard">
+        <Button>Dashboard</Button>
+      </Link>
+      <UserButton />
     </div>
   );
 };
