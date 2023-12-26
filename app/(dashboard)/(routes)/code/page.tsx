@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import * as z from "zod";
-import { LucideIcon, MessageSquare } from "lucide-react";
+import { Code, LucideIcon, MessageSquare } from "lucide-react";
 import Loader from "@/components/Loader";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
@@ -17,8 +17,9 @@ import Empty from "@/components/Empty";
 import { cn } from "@/lib/utils";
 import UserAvatar from "@/components/UserAvatar";
 import BotAvatar from "@/components/BotAvatar";
+import ReactMarkdown from "react-markdown";
 
-const ConversationPage = () => {
+const CodePage = () => {
   const router = useRouter();
   const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -35,7 +36,7 @@ const ConversationPage = () => {
         content: values.prompt,
       };
       const newMessages = [...messages, userMessage];
-      const response = await axios.post("/api/conversation", {
+      const response = await axios.post("/api/code", {
         messages: newMessages,
       });
       setMessages((current) => [...current, userMessage, response.data]);
@@ -50,11 +51,11 @@ const ConversationPage = () => {
   return (
     <div>
       <Heading
-        title="Conversation"
-        description="Our most advanced conversation model."
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
+        title="Code Generation"
+        description="Generate code using descriptive text."
+        icon={Code}
+        iconColor="text-green-700"
+        bgColor="bg-green-700/10"
       />
       <div className="px-4 lg:px-8">
         <Form {...form}>
@@ -70,7 +71,7 @@ const ConversationPage = () => {
                     <Input
                       className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                       disabled={isLoading}
-                      placeholder="Write a message for Birhtday Wish"
+                      placeholder="Write a simple code to calculate simple interest in JavaScript"
                       {...field}
                     />
                   </FormControl>
@@ -103,7 +104,21 @@ const ConversationPage = () => {
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                <p className="text-sm">{String(message.content)}</p>
+                <ReactMarkdown
+                  components={{
+                    pre: ({ node, ...props }) => (
+                      <div className="overflow-auto w-full my-2 bg-black/95 text-white p-2 rounded-lg">
+                        <pre {...props} />
+                      </div>
+                    ),
+                    code: ({ node, ...props }) => (
+                      <code className="bg-black/20 rounded-lg p-1" {...props} />
+                    ),
+                  }}
+                  className={"text-sm overflow-hidden leading-7"}
+                >
+                  {String(message.content)}
+                </ReactMarkdown>
               </div>
             ))}
           </div>
@@ -113,4 +128,4 @@ const ConversationPage = () => {
   );
 };
 
-export default ConversationPage;
+export default CodePage;

@@ -47,7 +47,7 @@ const tools = [
     icon: Code,
     color: "text-green-700",
     bgColor: "text-green-700/10",
-    href: "/video",
+    href: "/code",
   },
 ];
 export default function DashBoardPage() {
