@@ -112,7 +112,10 @@ const CodePage = () => {
                       </div>
                     ),
                     code: ({ node, ...props }) => (
-                      <code className="bg-black/20 rounded-lg p-1" {...props} />
+                      <code
+                        className="bg-black/[0.05] rounded-lg p-1"
+                        {...props}
+                      />
                     ),
                   }}
                   className={"text-sm overflow-hidden leading-7"}
