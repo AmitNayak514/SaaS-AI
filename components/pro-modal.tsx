@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import { useProModal } from "@/hooks/use-pro-modal";
 import {
   Dialog,
@@ -22,40 +23,54 @@ import { Badge } from "./ui/badge";
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import { useState } from "react";
+
+const tools = [
+  {
+    label: "Conversations",
+    icon: MessageSquare,
+    color: "text-violet-500",
+    bgColor: "text-violet-500/10",
+  },
+  {
+    label: "Music Generation",
+    icon: Music,
+    color: "text-emerald-500",
+    bgColor: "text-emerald-500/10",
+  },
+  {
+    label: "Image Generation",
+    icon: ImageIcon,
+    color: "text-pink-700",
+    bgColor: "text-pink-700/10",
+  },
+  {
+    label: "Video Generation",
+    icon: VideoIcon,
+    color: "text-orange-700",
+    bgColor: "text-orange-700/10",
+  },
+  {
+    label: "Code Generation",
+    icon: Code,
+    color: "text-green-700",
+    bgColor: "text-green-700/10",
+  },
+];
 export const ProModal = () => {
   const proModal = useProModal();
-  const tools = [
-    {
-      label: "Conversations",
-      icon: MessageSquare,
-      color: "text-violet-500",
-      bgColor: "text-violet-500/10",
-    },
-    {
-      label: "Music Generation",
-      icon: Music,
-      color: "text-emerald-500",
-      bgColor: "text-emerald-500/10",
-    },
-    {
-      label: "Image Generation",
-      icon: ImageIcon,
-      color: "text-pink-700",
-      bgColor: "text-pink-700/10",
-    },
-    {
-      label: "Video Generation",
-      icon: VideoIcon,
-      color: "text-orange-700",
-      bgColor: "text-orange-700/10",
-    },
-    {
-      label: "Code Generation",
-      icon: Code,
-      color: "text-green-700",
-      bgColor: "text-green-700/10",
-    },
-  ];
+  const [loading, setLoading] = useState(false);
+  const onSubscribe = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("/api/stripe");
+      window.location.href = response?.data?.url;
+    } catch (error) {
+      console.error(error, "STRIPE_CLIENT_ERROR");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
       <DialogContent>
@@ -86,7 +101,12 @@ export const ProModal = () => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button size="lg" className="w-full" variant={"premium"}>
+          <Button
+            onClick={onSubscribe}
+            size="lg"
+            className="w-full"
+            variant={"premium"}
+          >
             Upgrade
             <Zap className="w-4 h-4 ml-2 fill-white" />
           </Button>
