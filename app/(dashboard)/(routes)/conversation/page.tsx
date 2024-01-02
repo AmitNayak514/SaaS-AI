@@ -33,7 +33,6 @@ const ConversationPage = () => {
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      throw new Error("Something ");
       const userMessage: ChatCompletionMessageParam = {
         role: "user",
         content: values.prompt,
@@ -48,10 +47,9 @@ const ConversationPage = () => {
       //TODO: Open Premium Modal
       if (error?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error("Something went wrong!");
       }
-      // else {
-      //   toast.error("Something went wrong!");
-      // }
       console.log(error);
     } finally {
       router.refresh();
